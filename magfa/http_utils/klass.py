@@ -23,7 +23,7 @@ class LOG:
         logging.info(*args, **kwargs)
 
 
-class HttpMethodUtils:
+class HttpMethodHelper:
     """Some useful Basic base HTTP methods"""
 
     def __init__(self, *args, **kwargs):
@@ -31,10 +31,11 @@ class HttpMethodUtils:
             "accept": "application/json",
             "cache-control": "no-cache",
         }
-        self.get_timeout = 10
-        self.post_timeout = 10
-        self.put_timeout = 10
+        self.get_timeout: int = 10
+        self.post_timeout: int = 10
+        self.put_timeout: int = 10
         self.delete_timeout = 10
+        self.proxy: dict | None = None
 
         super().__init__(*args, **kwargs)
 
@@ -81,7 +82,7 @@ class HttpMethodUtils:
 
         return False
 
-    def get(self, url: str, params: dict | None = None, **kwargs) -> requests.Response:
+    def _get(self, url: str, params: dict | None = None, **kwargs) -> requests.Response:
         """
         Send HTTP GET request with given params
 
@@ -114,7 +115,7 @@ class HttpMethodUtils:
         )
         return response
 
-    def post(self, url: str, data=None, json: dict | None = None, **kwargs):
+    def _post(self, url: str, data=None, json: dict | None = None, **kwargs):
         """
         Send HTTP POST request with given params
 
@@ -149,7 +150,7 @@ class HttpMethodUtils:
         LOG.info("POST request Response Code: %s" % response.status_code)
         return response
 
-    def delete(self, url: str, **kwargs):
+    def _delete(self, url: str, **kwargs):
         """
         Send HTTP DELETE request with given params
 
@@ -176,7 +177,7 @@ class HttpMethodUtils:
         LOG.info("DELETE request Response Code: %s" % response.status_code)
         return response
 
-    def put(self, url: str, data=None, **kwargs):
+    def _put(self, url: str, data=None, **kwargs):
         """
            Send HTTP PUT request with given params
            this method is a wrapper(proxy) for requests.put method

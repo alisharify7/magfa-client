@@ -1,0 +1,32 @@
+[project]
+name = "magfa"
+version = "0.1.0"
+description = "A simple Python client for Magfa SMS HTTP API v2"
+readme = "README.md"
+authors = [
+    { name = "Ali Sharify", email = "alisharifyofficial@gmail.com" }
+]
+license = "GPL-3.0"
+keywords = ["sms", "magfa", "messaging", "api", "client", "magfa-client", "magfa-py", "magfa-python"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Communications :: Telephony",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+]
+
+requires-python = ">=3.9"
+dependencies = [
+    "requests>=2.25"
+]
+
+[project.urls]
+Homepage = "https://github.com/alisharify7/magfa-client"
+Documentation = "https://github.com/alisharify7/magfa-client"
+Repository = "https://github.com/alisharify7/magfa-client"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
