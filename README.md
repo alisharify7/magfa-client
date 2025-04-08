@@ -88,5 +88,13 @@ print(error_text)  # Output: Invalid username or password.
 <a href="https://messaging.magfa.com/ui/?public/wiki/api/http_v2#errors">Error Codes Documentation</a>
 
 
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=alisharify7/magfa&type=Date)](https://star-history.com/#alisharify7/magfa&Date)
+
+
+
+
 ## 🧑‍💻 Author
 Developed by <a href="https://github.com/alisahrify7">Ali Sharify</a>
