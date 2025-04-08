@@ -7,7 +7,13 @@ This library allows you to send SMS messages, check message statuses, retrieve i
 <img src="./doc/logo.png">
 
 
----
+<a href="https://www.coffeete.ir/alisharify7">Donate/Support [Optional]</a>
+
+
+<img alt="GitHub repo size" src="https://img.shields.io/github/repo-size//alisharify7/magfa"> <img alt="GitHub contributors" src="https://img.shields.io/github/contributors//alisharify7/magfa"> <img alt="GitHub repo Licence" src="https://img.shields.io/pypi/l/flask_captcha2">
+
+[![Latest version](https://img.shields.io/pypi/v/magfa)](https://pypi.python.org/pypi/magfa)[![Supported python versions](https://img.shields.io/pypi/pyversions/magfa)](https://pypi.python.org/pypi/magfa) [![Downloads](https://static.pepy.tech/badge/magfa)](https://pepy.tech/project/magfa) [![Downloads](https://static.pepy.tech/badge/magfa/month)](https://pepy.tech/project/magfa)
+  
 
 ## 🚀 Features
 
