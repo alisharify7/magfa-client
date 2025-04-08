@@ -97,4 +97,4 @@ print(error_text)  # Output: Invalid username or password.
 
 
 ## 🧑‍💻 Author
-Developed by <a href="https://github.com/alisahrify7">Ali Sharify</a>
+Developed by <a href="https://github.com/alisharify7">Ali Sharify</a>
