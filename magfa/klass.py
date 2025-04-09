@@ -38,6 +38,7 @@ class Magfa(HttpMethodHelper):
         endpoint (str): Base URL for the Magfa SMS API. Defaults to the official endpoint.
         sender (str | None): Default sender number for SMS messages.
         auth (tuple): A tuple for HTTP Basic Auth, combining username/domain and password.
+        debug (bool): log the http requests to stdout or not.
 
     Methods:
         balance() -> Response:
