@@ -80,7 +80,7 @@ class Magfa(HttpMethodHelper):
         self.domain = domain
         self.sender = sender
         self.auth = (self.username + "/" + self.domain, self.password)
-        self.debug = debug or os.environ.get("MAGFA_DEBUG", False)
+        self.debug = debug or (os.environ.get("MAGFA_DEBUG", "False") == "True")
 
     def balance(self) -> Response:
         """get account balance.
