@@ -88,6 +88,23 @@ print(error_text)  # Output: Invalid username or password.
 <a href="https://messaging.magfa.com/ui/?public/wiki/api/http_v2#errors">Error Codes Documentation</a>
 
 
+# 🚧 Configuration
+
+| config name | description                          | type | status     | 
+|-------------|--------------------------------------|------|------------|
+| MAGFA_DEBUG | log all requests/responses in stdout | environment variable  | `Optional` |
+
+for enabling `DEBUG` mode you can directly pass `debug` option for magfa class or set an environment variable
+called `MAGFA_DEBUG` with string value ("True", "False")
+
+```python
+from magfa import Magfa
+magfa_client = Magfa(..., debug=False)
+```
+
+
+
+
 
 ## Star History
 
