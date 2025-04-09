@@ -1,19 +1,23 @@
 """
- * magfa client
- * author: github.com/alisharify7
- * email: alisharifyofficial@gmail.com
- * license: see LICENSE for more details.
- * Copyright (c) 2025 - ali sharifi
- * https://github.com/alisharify7/magfa-client
+* magfa client
+* author: github.com/alisharify7
+* email: alisharifyofficial@gmail.com
+* license: see LICENSE for more details.
+* Copyright (c) 2025 - ali sharifi
+* https://github.com/alisharify7/magfa-client
 """
+
+import os
 import re
 import typing
 
 from requests import Response
 
 from magfa.error_codes import errors
-from magfa.http_utils.klass import HttpMethodHelper
+from magfa.http_utils import HttpMethodHelper
+from dotenv import load_dotenv
 
+load_dotenv()
 
 class Magfa(HttpMethodHelper):
     """
@@ -65,6 +69,7 @@ class Magfa(HttpMethodHelper):
         domain: str,
         endpoint: str = "https://sms.magfa.com/api/http/sms/v2/",
         sender: str | None = None,
+        debug: bool  = False,
         *args,
         **kwargs,
     ):
@@ -75,6 +80,7 @@ class Magfa(HttpMethodHelper):
         self.domain = domain
         self.sender = sender
         self.auth = (self.username + "/" + self.domain, self.password)
+        self.debug = debug or os.environ.get("MAGFA_DEBUG", False)
 
     def balance(self) -> Response:
         """get account balance.
@@ -144,15 +150,14 @@ class Magfa(HttpMethodHelper):
 
     @staticmethod
     def _is_valid_phone_number(number: str) -> bool:
-        return bool(re.match(r'^09\d{9}$', number))
-
+        return bool(re.match(r"^09\d{9}$", number))
 
     def normalize_data(self):
         # TODO: add normalize method
         pass
 
     def __str__(self):
-        return f"<Magfa SMS>"
+        return f"<Magfa SMS object {self.username}/{self.domain}>"
 
     def __repr__(self):
-        return self.__str__()
+        return f"{self.__class__.__name__}({self.username!r}, {self.domain!r}, {self.sender!r})"

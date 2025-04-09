@@ -1,28 +1,22 @@
 """
- * magfa client
- * author: github.com/alisharify7
- * email: alisharifyofficial@gmail.com
- * license: see LICENSE for more details.
- * Copyright (c) 2025 - ali sharifi
- * https://github.com/alisharify7/magfa-client
+* magfa client
+* author: github.com/alisharify7
+* email: alisharifyofficial@gmail.com
+* license: see LICENSE for more details.
+* Copyright (c) 2025 - ali sharifi
+* https://github.com/alisharify7/magfa-client
 """
 
 # build in
+import json as json_module
 import typing
-import logging
+from magfa.logger import main_logger
+
 
 # lib
 import requests
 
 
-class LOG:
-    @staticmethod
-    def log(*args, **kwargs):
-        logging.warning(*args, **kwargs)
-
-    @staticmethod
-    def info(*args, **kwargs):
-        logging.info(*args, **kwargs)
 
 
 class HttpMethodHelper:
@@ -38,6 +32,7 @@ class HttpMethodHelper:
         self.put_timeout: int = 10
         self.delete_timeout = 10
         self.proxy: dict | None = None
+        self.debug: bool = False
 
         super().__init__(*args, **kwargs)
 
@@ -102,7 +97,8 @@ class HttpMethodHelper:
 
         doc: https://requests.readthedocs.io/en/latest/user/quickstart/#make-a-request
         """
-        LOG.info("GET request: %s" % url)
+        if self.debug:
+            main_logger.debug("SEND GET request TO: %s" % url)
 
         response = requests.get(
             url=url,
@@ -112,9 +108,10 @@ class HttpMethodHelper:
             timeout=self.get_timeout,
         )
 
-        LOG.info(
-            "GET request Response Code: %s %s" % (response.status_code, response.url)
-        )
+        if self.debug:
+            main_logger.debug(
+                "GET request Response: %s %s\n%s" % (response.status_code, response.url, response.text)
+            )
         return response
 
     def _post(self, url: str, data=None, json: dict | None = None, **kwargs):
@@ -138,7 +135,8 @@ class HttpMethodHelper:
 
         doc: https://requests.readthedocs.io/en/latest/user/quickstart/#make-a-request
         """
-        LOG.info("POST request: %s" % url)
+        if self.debug:
+            main_logger.debug("POST request: %s" % url)
 
         response = requests.post(
             url=url,
@@ -149,7 +147,10 @@ class HttpMethodHelper:
             timeout=self.post_timeout,
         )
 
-        LOG.info("POST request Response Code: %s" % response.status_code)
+        if self.debug:
+            main_logger.debug(
+                "POST request Response: %s %s\n%s" % (response.status_code, response.url, json_module.dumps(response.json(), indent=4))
+            )
         return response
 
     def _delete(self, url: str, **kwargs):
@@ -168,7 +169,8 @@ class HttpMethodHelper:
 
         doc: https://requests.readthedocs.io/en/latest/user/quickstart/#make-a-request
         """
-        LOG.info("DELETE request: %s" % url)
+        if self.debug:
+            main_logger.debug("DELETE request: %s" % url)
 
         response = requests.delete(
             timeout=self.delete_timeout,
@@ -176,7 +178,10 @@ class HttpMethodHelper:
             **kwargs,
             headers=self.request_headers,
         )
-        LOG.info("DELETE request Response Code: %s" % response.status_code)
+        if self.debug:
+            main_logger.debug(
+                "DELETE request Response: %s %s\n%s" % (response.status_code, response.url, response.text)
+            )
         return response
 
     def _put(self, url: str, data=None, **kwargs):
@@ -189,7 +194,10 @@ class HttpMethodHelper:
 
            doc: https://requests.readthedocs.io/en/latest/user/quickstart/#make-a-request
         """
-        LOG.info("PUT request: %s" % url)
+
+        if self.debug:
+            main_logger.debug("PUT request: %s" % url)
+
         response = requests.put(
             url=url,
             data=data,
@@ -198,5 +206,8 @@ class HttpMethodHelper:
             **kwargs,
         )
 
-        LOG.info("PUT request Response Code: %s" % response.status_code)
+        if self.debug:
+            main_logger.debug(
+                "PUT request Response: %s %s\n%s" % (response.status_code, response.url, response.text)
+            )
         return response

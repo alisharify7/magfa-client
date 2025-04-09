@@ -1,19 +1,17 @@
 """
- * magfa client
- * author: github.com/alisharify7
- * email: alisharifyofficial@gmail.com
- * license: see LICENSE for more details.
- * Copyright (c) 2025 - ali sharifi
- * https://github.com/alisharify7/magfa-client
+* magfa client
+* author: github.com/alisharify7
+* email: alisharifyofficial@gmail.com
+* license: see LICENSE for more details.
+* Copyright (c) 2025 - ali sharifi
+* https://github.com/alisharify7/magfa-client
 """
 
 import logging
 import sys
 
 
-def get_logger(
-    log_level: int, logger_name: str = "Flask-Captcha"
-) -> logging.Logger:
+def get_logger(log_level: int, logger_name: str = "MagfaClient-LOGGER") -> logging.Logger:
     """create a custom stdout Logger with given level and name
 
     :param logger_name: name of the logger
@@ -36,3 +34,6 @@ def get_logger(
     handler.setFormatter(logformat)
     logger.addHandler(handler)
     return logger
+
+
+main_logger = get_logger(log_level=logging.DEBUG, logger_name="MagfaClient")
