@@ -4,7 +4,7 @@ A simple and clean Python client for interacting with the [Magfa SMS HTTP API v2
 This library allows you to send SMS messages, check message statuses, retrieve inbound messages, and monitor your account balance.
 
 
-<img src="./doc/logo.png">
+<img src="https://raw.githubusercontent.com/alisharify7/magfa-client/refs/heads/main/doc/logo.png">
 
 
 <a href="https://www.coffeete.ir/alisharify7">Donate/Support [Optional]</a>
