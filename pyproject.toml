@@ -6,7 +6,6 @@ readme = "README.md"
 authors = [
     { name = "Ali Sharify", email = "alisharifyofficial@gmail.com" }
 ]
-author
 license = "GPL-3.0"
 keywords = ["sms", "magfa", "messaging", "api", "client", "magfa-client", "magfa-py", "magfa-python"]
 classifiers = [
