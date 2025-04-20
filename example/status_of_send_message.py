@@ -22,5 +22,3 @@ response = magfa_client.statuses(mid)
 if response.status_code == 200:
     status = response.json().get("status")
     print(f"Message status: {magfa_client.get_error_message(status)}")
-else:
-    print(f"Error: {magfa_client.get_error_message(response.json()['status'])}")

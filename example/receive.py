@@ -13,11 +13,11 @@ username = "your_username"
 password = "your_password"
 domain = "your_domain"
 
-magfa_client = Magfa(username, password, domain, debug=True)
+magfa_client = Magfa(username, password, domain)
 
 response = magfa_client.messages(count=100)
 
-if response.status_code == 200:
+if response.status_code == 200 and response.json()["status"] == 0:
     messages = response.json().get("messages", [])
     for msg in messages:
         print(f"From: {msg['sender']}, Message: {msg['messageBody']}")

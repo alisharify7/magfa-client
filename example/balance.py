@@ -13,7 +13,7 @@ username = "your_username"
 password = "your_password"
 domain = "your_domain"
 
-magfa_client = Magfa(username=username, password=password, domain=domain, debug=False)
+magfa_client = Magfa(username=username, password=password, domain=domain)
 
 response = magfa_client.balance()
 
