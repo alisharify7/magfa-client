@@ -7,207 +7,86 @@
 * https://github.com/alisharify7/magfa-client
 """
 
-# build in
 import json as json_module
 import typing
+import requests
+import logging
+
 from magfa.logger import main_logger
 
 
-# lib
-import requests
-
-
-
-
 class HttpMethodHelper:
-    """Some useful Basic base HTTP methods"""
+    """Basic reusable HTTP methods wrapper."""
 
     def __init__(self, *args, **kwargs):
-        self.__headers: typing.Dict[str, str] = {
+        self._headers: dict[str, str] = {
             "accept": "application/json",
             "cache-control": "no-cache",
         }
-        self.get_timeout: int = 10
-        self.post_timeout: int = 10
-        self.put_timeout: int = 10
+
+        self.get_timeout = 10
+        self.post_timeout = 10
+        self.put_timeout = 10
         self.delete_timeout = 10
+
         self.proxy: dict | None = None
         self.debug: bool = False
+        self.logger: logging.Logger = main_logger
 
         super().__init__(*args, **kwargs)
 
     @property
-    def request_headers(self) -> typing.Dict:
-        """this property returns a dict for each request header
-        headers contains authentication headers, etc,
-        """
-        return self.__headers
+    def request_headers(self) -> dict[str, str]:
+        """Return request headers for each HTTP request."""
+        return self._headers
 
     def add_request_header(self, key: str, value: typing.Any) -> None:
-        """
-        update or adding a new header to headers repository
-
-        :param key: the key of the new header
-        :type key: str
-
-        :param value: value of key param in the header
-        :type key: any
-
-        .. highlight:: python
-        .. code-block:: python
-            obj.add_request_header(key='auth', value='token')
-
-        """
-        self.__headers.update({str(key): value})
+        """Add or update a header."""
+        self._headers[str(key)] = str(value)
 
     def delete_request_header(self, key: str) -> bool:
-        """
-        deleting an existing header from headers list
+        """Remove a header if it exists."""
+        return self._headers.pop(key, None) is not None
 
-        :param key: name of the header that should be deleted.
-        :type key: str
+    def _send_request(
+        self,
+        method: str,
+        url: str,
+        timeout: int,
+        **kwargs,
+    ) -> requests.Response:
+        if self.debug:
+            self.logger.debug(f"{method.upper()} request to: {url}")
 
+        response = requests.request(
+            method=method.upper(),
+            url=url,
+            headers=self.request_headers,
+            timeout=timeout,
+            **kwargs,
+        )
 
-        .. highlight:: python
-        .. code-block:: python
-            obj.delete_request_header(key='auth')
+        if self.debug:
+            try:
+                body = response.json()
+                body_str = json_module.dumps(body, indent=4)
+            except Exception:
+                body_str = response.text
 
-        """
-        if key in self.__headers:
-            self.__headers.pop(key)
-            return True
+            self.logger.debug(
+                f"{method.upper()} Response: {response.status_code} {response.url}\n{body_str}"
+            )
 
-        return False
+        return response
 
     def _get(self, url: str, params: dict | None = None, **kwargs) -> requests.Response:
-        """
-        Send HTTP GET request with given params
+        return self._send_request("get", url, self.get_timeout, params=params, **kwargs)
 
-        this method is a wrapper(proxy) for requests.get method
+    def _post(self, url: str, data=None, json: dict | None = None, **kwargs) -> requests.Response:
+        return self._send_request("post", url, self.post_timeout, data=data, json=json, **kwargs)
 
-         :param url: just ``url path`` not whole url, the whole url is taken from self.endpoint
-         :type url: str
+    def _put(self, url: str, data=None, **kwargs) -> requests.Response:
+        return self._send_request("put", url, self.put_timeout, data=data, **kwargs)
 
-         :param params: HTTP GET url parameters
-         :type params: dict
-
-         :param kwargs: optional arguments
-         :type kwargs: dict
-
-
-        doc: https://requests.readthedocs.io/en/latest/user/quickstart/#make-a-request
-        """
-        if self.debug:
-            main_logger.debug("SEND GET request TO: %s" % url)
-
-        response = requests.get(
-            url=url,
-            params=params,
-            **kwargs,
-            headers=self.request_headers,
-            timeout=self.get_timeout,
-        )
-
-        if self.debug:
-            main_logger.debug(
-                "GET request Response: %s %s\n%s" % (response.status_code, response.url, response.text)
-            )
-        return response
-
-    def _post(self, url: str, data=None, json: dict | None = None, **kwargs):
-        """
-        Send HTTP POST request with given params
-
-        this method is a wrapper(proxy) for requests.post method
-
-         :param url: just ``url path`` not whole url, the whole url is taken from self.endpoint
-         :type url: str
-
-         :param data: data for POST request
-         :type data: any
-
-         :param json: json body for POST request
-         :type json: dict
-
-         :param kwargs: optional arguments
-         :type kwargs: dict
-
-
-        doc: https://requests.readthedocs.io/en/latest/user/quickstart/#make-a-request
-        """
-        if self.debug:
-            main_logger.debug("POST request: %s" % url)
-
-        response = requests.post(
-            url=url,
-            data=data,
-            json=json,
-            **kwargs,
-            headers=self.request_headers,
-            timeout=self.post_timeout,
-        )
-
-        if self.debug:
-            main_logger.debug(
-                "POST request Response: %s %s\n%s" % (response.status_code, response.url, json_module.dumps(response.json(), indent=4))
-            )
-        return response
-
-    def _delete(self, url: str, **kwargs):
-        """
-        Send HTTP DELETE request with given params
-
-        this method is a wrapper(proxy) for requests.delete method
-
-         :param url: just ``url path`` not whole url, the whole url is taken from self.endpoint
-         :type url: str
-
-
-         :param kwargs: optional arguments
-         :type kwargs: dict
-
-
-        doc: https://requests.readthedocs.io/en/latest/user/quickstart/#make-a-request
-        """
-        if self.debug:
-            main_logger.debug("DELETE request: %s" % url)
-
-        response = requests.delete(
-            timeout=self.delete_timeout,
-            url=url,
-            **kwargs,
-            headers=self.request_headers,
-        )
-        if self.debug:
-            main_logger.debug(
-                "DELETE request Response: %s %s\n%s" % (response.status_code, response.url, response.text)
-            )
-        return response
-
-    def _put(self, url: str, data=None, **kwargs):
-        """
-           Send HTTP PUT request with given params
-           this method is a wrapper(proxy) for requests.put method
-
-        :param data: (optional) Dictionary, list of tuples, bytes, or file-like
-            object to send in the body of the :class:`Request`.
-
-           doc: https://requests.readthedocs.io/en/latest/user/quickstart/#make-a-request
-        """
-
-        if self.debug:
-            main_logger.debug("PUT request: %s" % url)
-
-        response = requests.put(
-            url=url,
-            data=data,
-            headers=self.request_headers,
-            timeout=self.put_timeout,
-            **kwargs,
-        )
-
-        if self.debug:
-            main_logger.debug(
-                "PUT request Response: %s %s\n%s" % (response.status_code, response.url, response.text)
-            )
-        return response
+    def _delete(self, url: str, **kwargs) -> requests.Response:
+        return self._send_request("delete", url, self.delete_timeout, **kwargs)
