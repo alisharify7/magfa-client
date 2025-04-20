@@ -8,3 +8,5 @@
 """
 
 from .klass import Magfa
+
+__all__ = ("Magfa",)
