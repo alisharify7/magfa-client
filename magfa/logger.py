@@ -11,29 +11,26 @@ import logging
 import sys
 
 
-def get_logger(log_level: int, logger_name: str = "MagfaClient-LOGGER") -> logging.Logger:
-    """create a custom stdout Logger with given level and name
+def get_logger(
+    log_level: int = logging.DEBUG, logger_name: str = "MagfaClient-LOGGER"
+) -> logging.Logger:
+    """Create a custom stdout logger with the given level and name.
 
-    :param logger_name: name of the logger
-    :type logger_name: str
-
-    :param log_level: logging level
-    :type log_level: int
-
-    :return: logging.Logger
-    :rtype: logging.Logger
+    :param logger_name: Name of the logger.
+    :param log_level: Logging level.
+    :return: Configured logger.
     """
-    log_level = log_level or logging.DEBUG
-    logformat = logging.Formatter(
-        f"[{logger_name}" + "- %(levelname)s] [%(asctime)s] - %(message)s"
-    )
     logger = logging.getLogger(logger_name)
     logger.setLevel(log_level)
-    handler = logging.StreamHandler(sys.stdout)
-    handler.setLevel(log_level)
-    handler.setFormatter(logformat)
-    logger.addHandler(handler)
+
+    # Prevent adding multiple handlers if logger is already configured
+    if not logger.handlers:
+        handler = logging.StreamHandler(sys.stdout)
+        handler.setLevel(log_level)
+        formatter = logging.Formatter(
+            f"[{logger_name}" + " - %(levelname)s] [%(asctime)s] - %(message)s"
+        )
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
+
     return logger
-
-
-main_logger = get_logger(log_level=logging.DEBUG, logger_name="MagfaClient")
