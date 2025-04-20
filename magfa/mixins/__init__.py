@@ -6,4 +6,9 @@
 * Copyright (c) 2025 - ali sharifi
 * https://github.com/alisharify7/magfa-client
 """
-from .klass import HttpMethodHelper
+
+from .http import HttpMixin
+from .logger import LoggerMixin
+
+
+__all__ = ("HttpMixin", "LoggerMixin")
