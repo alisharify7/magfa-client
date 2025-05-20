@@ -109,7 +109,7 @@ magfa_client = Magfa(..., debug=False)
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=alisharify7/magfa-client&type=Date)](https://www.star-history.com/#alisharify7/magfa-client&Date)
+[![Stargazers over time](https://starchart.cc/alisharify7/magfa-client.svg?variant=adaptive)](https://starchart.cc/alisharify7/magfa-client)
 
 ## 🧑‍💻 Author
 
