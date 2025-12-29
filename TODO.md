@@ -1,3 +1,5 @@
-- [ ] add tests
+- [ ] add unit tests
 - [ ] separate each section for http request class and magfa class
 - [ ] add more examples
+- [ ] add sphinx doc
+- [ ] support SOAP version of magfa api 
